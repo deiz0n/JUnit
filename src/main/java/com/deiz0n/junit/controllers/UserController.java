@@ -54,6 +54,14 @@ public class UserController {
     }
 
     @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserDTO newUser) {
+        newUser.setId(id);
+        var user = service.updateResource(newUser);
+        return ResponseEntity.ok().body(user);
+    }
+
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.removeResource(id);

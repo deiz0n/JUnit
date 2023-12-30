@@ -10,7 +10,7 @@ public interface GenericService {
     User getResource(Long id);
     List<User> getResources();
     User createResource(UserDTO newUser);
-    User updateResource(User user);
+    User updateResource(UserDTO newUser);
     void removeResource(Long id);
 
 }

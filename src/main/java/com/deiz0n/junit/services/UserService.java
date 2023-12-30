@@ -45,8 +45,10 @@ public class UserService implements GenericService {
     }
 
     @Override
-    public User updateResource(User user) {
-        return null;
+    public User updateResource(UserDTO newUser) {
+        validationData(newUser);
+        var user = mapper.map(newUser, User.class);
+        return repository.save(user);
     }
 
     @Override
@@ -56,7 +58,8 @@ public class UserService implements GenericService {
     }
 
     private void validationData(UserDTO user) {
-        if (repository.findByEmail(user.getEmail()).isPresent()) {
+        var obj = repository.findByEmail(user.getEmail());
+        if (obj.isPresent() && !obj.get().getId().equals(user.getId())) {
             throw new FieldExistingException("Email já cadastrado");
         }
     }
