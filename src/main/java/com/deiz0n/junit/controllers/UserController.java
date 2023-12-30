@@ -53,5 +53,12 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.removeResource(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

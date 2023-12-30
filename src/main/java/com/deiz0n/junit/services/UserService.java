@@ -51,7 +51,8 @@ public class UserService implements GenericService {
 
     @Override
     public void removeResource(Long id) {
-
+        var user = getResource(id);
+        repository.delete(user);
     }
 
     private void validationData(UserDTO user) {
