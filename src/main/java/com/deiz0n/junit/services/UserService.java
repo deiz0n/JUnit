@@ -1,6 +1,7 @@
 package com.deiz0n.junit.services;
 
 import com.deiz0n.junit.domain.User;
+import com.deiz0n.junit.domain.dto.UserDTO;
 import com.deiz0n.junit.repositories.UserRepository;
 import com.deiz0n.junit.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -36,8 +37,9 @@ public class UserService implements GenericService {
     }
 
     @Override
-    public User createResource(User user) {
-        return null;
+    public User createResource(UserDTO newUser) {
+        var user = mapper.map(newUser, User.class);
+        return repository.save(user);
     }
 
     @Override
