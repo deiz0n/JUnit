@@ -3,6 +3,7 @@ package com.deiz0n.junit.services;
 import com.deiz0n.junit.domain.User;
 import com.deiz0n.junit.domain.dto.UserDTO;
 import com.deiz0n.junit.repositories.UserRepository;
+import com.deiz0n.junit.services.exceptions.FieldExistingException;
 import com.deiz0n.junit.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class UserService implements GenericService {
 
     @Override
     public User createResource(UserDTO newUser) {
+        validationData(newUser);
         var user = mapper.map(newUser, User.class);
         return repository.save(user);
     }
@@ -51,4 +53,11 @@ public class UserService implements GenericService {
     public void removeResource(Long id) {
 
     }
+
+    private void validationData(UserDTO user) {
+        if (repository.findByEmail(user.getEmail()).isPresent()) {
+            throw new FieldExistingException("Email já cadastrado");
+        }
+    }
+
 }

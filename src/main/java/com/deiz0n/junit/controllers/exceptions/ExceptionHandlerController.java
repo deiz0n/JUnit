@@ -1,5 +1,6 @@
 package com.deiz0n.junit.controllers.exceptions;
 
+import com.deiz0n.junit.services.exceptions.FieldExistingException;
 import com.deiz0n.junit.services.exceptions.ResourceNotFoundException;
 import com.deiz0n.junit.services.exceptions.StandartError;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,17 @@ public class ExceptionHandlerController {
                 request.getRequestURI()
         );
         return ResponseEntity.status(404).body(error);
+    }
+
+    @ExceptionHandler(FieldExistingException.class)
+    public ResponseEntity<?> fieldExisting(FieldExistingException exception, HttpServletRequest request) {
+        var error = new StandartError(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(400).body(error);
     }
 
 }
