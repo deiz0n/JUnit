@@ -3,6 +3,7 @@ package com.deiz0n.junit.services;
 import com.deiz0n.junit.domain.User;
 import com.deiz0n.junit.domain.dto.UserDTO;
 import com.deiz0n.junit.repositories.UserRepository;
+import com.deiz0n.junit.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,8 +45,7 @@ class UserServiceTest {
 
     @Test
     void whenFindByIDThenReturnAnUserInstance() {
-        Mockito.when(repository
-                .findById(Mockito.anyInt()))
+        Mockito.when(repository.findById(Mockito.anyInt()))
                 .thenReturn(optionalUser);
 
         User response = service.getResource(ID);
@@ -55,6 +55,19 @@ class UserServiceTest {
         Assertions.assertEquals(ID, response.getId());
         Assertions.assertEquals(NOME, response.getNome());
         Assertions.assertEquals(EMAIL, response.getEmail());
+    }
+
+    @Test
+    void whenFindByIDThenReturnAnResourceNotFoundException() {
+        Mockito.when(repository.findById(Mockito.anyInt()))
+                .thenThrow(new ResourceNotFoundException("User não encontrado"));
+
+        try {
+            service.getResource(ID);
+        } catch (Exception error) {
+            Assertions.assertEquals(ResourceNotFoundException.class, error.getClass());
+            Assertions.assertEquals("User não encontrado", error.getMessage());
+        }
     }
 
     @Test
