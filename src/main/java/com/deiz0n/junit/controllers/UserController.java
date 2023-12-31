@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable Integer id) {
         var user = mapper.map(service.getResource(id), UserDTO.class);
         return ResponseEntity.ok().body(user);
     }
@@ -55,7 +55,7 @@ public class UserController {
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserDTO newUser) {
+    public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody UserDTO newUser) {
         newUser.setId(id);
         var user = service.updateResource(newUser);
         return ResponseEntity.ok().body(user);
@@ -63,7 +63,7 @@ public class UserController {
 
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.removeResource(id);
         return ResponseEntity.noContent().build();
     }

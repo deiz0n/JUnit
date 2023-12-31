@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDTO {
 
-    private Long id;
+    private Integer id;
     private String nome;
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

@@ -20,11 +20,11 @@ public class LocalConfig {
 
     @Bean
     public List<User> startDB() {
-        var user = new User(1L
+        var user = new User(1
                 ,"Eduardo"
                 ,"eduardo@gmail.com"
                 ,"123");
-        var user2 = new User(2L
+        var user2 = new User(2
                 ,"Dudu"
                 ,"dudu@gmail.com"
                 ,"321");

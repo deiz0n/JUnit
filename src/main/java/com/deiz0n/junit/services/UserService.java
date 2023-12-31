@@ -6,9 +6,11 @@ import com.deiz0n.junit.repositories.UserRepository;
 import com.deiz0n.junit.services.exceptions.FieldExistingException;
 import com.deiz0n.junit.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements GenericService {
@@ -24,11 +26,11 @@ public class UserService implements GenericService {
     }
 
     @Override
-    public User getResource(Long id) {
-       var user = repository.findById(id);
+    public User getResource(Integer id) {
+       Optional<User> user = repository.findById(id);
        return user.
                orElseThrow(() -> new ResourceNotFoundException(
-                       String.format("O recurso com id: %s não foi encontrado.",  id.toString())));
+                       String.format("O recurso com id: %d não foi encontrado.",  id)));
     }
 
     @Override
@@ -52,7 +54,7 @@ public class UserService implements GenericService {
     }
 
     @Override
-    public void removeResource(Long id) {
+    public void removeResource(Integer id) {
         var user = getResource(id);
         repository.delete(user);
     }
