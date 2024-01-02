@@ -89,7 +89,17 @@ class UserServiceTest {
     }
 
     @Test
-    void createResource() {
+    void whenCreateThenReturnSuccess() {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(user);
+
+        User response = service.createResource(userDTO);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(User.class, response.getClass());
+        Assertions.assertEquals(ID, response.getId());
+        Assertions.assertEquals(NOME, response.getNome());
+        Assertions.assertEquals(EMAIL, response.getEmail());
+        Assertions.assertEquals(SENHA, response.getSenha());
     }
 
     @Test
