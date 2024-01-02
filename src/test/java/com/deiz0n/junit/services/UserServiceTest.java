@@ -132,6 +132,20 @@ class UserServiceTest {
     }
 
     @Test
+    void whenUpdateResourceThenReturnFieldExistingException() {
+        Mockito.when(repository.findByEmail(Mockito.anyString()))
+                .thenReturn(optionalUser);
+
+        try {
+            optionalUser.get().setId(10);
+            service.createResource(userDTO);
+        } catch (Exception error) {
+            Assertions.assertEquals(FieldExistingException.class, error.getClass());
+            Assertions.assertEquals("Email já cadastrado", error.getMessage());
+        }
+    }
+
+    @Test
     void removeResource() {
     }
 
