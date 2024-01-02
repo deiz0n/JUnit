@@ -148,7 +148,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenRemoveResourceTheResourceNotFoundException() {
+    void whenRemoveResourceThenResourceNotFoundException() {
         when(repository.findById(anyInt()))
                 .thenThrow(new ResourceNotFoundException(
                         String.format("O recurso com id: %d não foi encontrado.", ID)));
