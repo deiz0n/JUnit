@@ -3,6 +3,7 @@ package com.deiz0n.junit.services;
 import com.deiz0n.junit.domain.User;
 import com.deiz0n.junit.domain.dto.UserDTO;
 import com.deiz0n.junit.repositories.UserRepository;
+import com.deiz0n.junit.services.exceptions.FieldExistingException;
 import com.deiz0n.junit.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,6 +101,20 @@ class UserServiceTest {
         Assertions.assertEquals(NOME, response.getNome());
         Assertions.assertEquals(EMAIL, response.getEmail());
         Assertions.assertEquals(SENHA, response.getSenha());
+    }
+
+    @Test
+    void whenCreateThenReturnFieldExistingException() {
+        Mockito.when(repository.findByEmail(Mockito.anyString()))
+                .thenReturn(optionalUser);
+
+        try {
+            optionalUser.get().setId(2);
+            service.createResource(userDTO);
+        } catch (Exception error) {
+            Assertions.assertEquals(FieldExistingException.class, error.getClass());
+            Assertions.assertEquals("Email já cadastrado", error.getMessage());
+        }
     }
 
     @Test
