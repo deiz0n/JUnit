@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserServiceTest {
@@ -48,7 +50,7 @@ class UserServiceTest {
 
     @Test
     void whenFindByIDThenReturnAnUserInstance() {
-        Mockito.when(repository.findById(Mockito.anyInt()))
+        when(repository.findById(Mockito.anyInt()))
                 .thenReturn(optionalUser);
 
         User response = service.getResource(ID);
@@ -62,7 +64,7 @@ class UserServiceTest {
 
     @Test
     void whenFindByIDThenReturnAnResourceNotFoundException() {
-        Mockito.when(repository.findById(Mockito.anyInt()))
+        when(repository.findById(Mockito.anyInt()))
                 .thenThrow(new ResourceNotFoundException("User não encontrado"));
 
         try {
@@ -75,7 +77,7 @@ class UserServiceTest {
 
     @Test
     void whenFindAllThenReturnListOfUsers() {
-        Mockito.when(repository.findAll()).thenReturn(List.of(user));
+        when(repository.findAll()).thenReturn(List.of(user));
 
         List<User> response = service.getResources();
 
@@ -91,7 +93,7 @@ class UserServiceTest {
 
     @Test
     void whenCreateThenReturnSuccess() {
-        Mockito.when(repository.save(Mockito.any())).thenReturn(user);
+        when(repository.save(Mockito.any())).thenReturn(user);
 
         User response = service.createResource(userDTO);
 
@@ -105,7 +107,7 @@ class UserServiceTest {
 
     @Test
     void whenCreateThenReturnFieldExistingException() {
-        Mockito.when(repository.findByEmail(Mockito.anyString()))
+        when(repository.findByEmail(Mockito.anyString()))
                 .thenReturn(optionalUser);
 
         try {
@@ -119,7 +121,7 @@ class UserServiceTest {
 
     @Test
     void whenUpdateResourceThenReturnSuccess() {
-        Mockito.when(repository.save(Mockito.any())).thenReturn(user);
+        when(repository.save(Mockito.any())).thenReturn(user);
 
         User response = service.updateResource(userDTO);
 
@@ -133,7 +135,7 @@ class UserServiceTest {
 
     @Test
     void whenUpdateResourceThenReturnFieldExistingException() {
-        Mockito.when(repository.findByEmail(Mockito.anyString()))
+        when(repository.findByEmail(Mockito.anyString()))
                 .thenReturn(optionalUser);
 
         try {
@@ -146,7 +148,17 @@ class UserServiceTest {
     }
 
     @Test
-    void removeResource() {
+    void whenRemoveResourceTheResourceNotFoundException() {
+        when(repository.findById(anyInt()))
+                .thenThrow(new ResourceNotFoundException(
+                        String.format("O recurso com id: %d não foi encontrado.", ID)));
+
+        try {
+            service.removeResource(ID);
+        } catch (Exception error) {
+            assertEquals(ResourceNotFoundException.class, error.getClass());
+            assertEquals(String.format("O recurso com id: %d não foi encontrado.", ID), error.getMessage());
+        }
     }
 
     private void startUser() {
