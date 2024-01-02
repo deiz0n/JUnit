@@ -49,7 +49,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenFindByIDThenReturnAnUserInstance() {
+    void whenFindByIDThenReturnUserInstance() {
         when(repository.findById(Mockito.anyInt()))
                 .thenReturn(optionalUser);
 
@@ -63,7 +63,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenFindByIDThenReturnAnResourceNotFoundException() {
+    void whenFindByIDThenReturnResourceNotFoundException() {
         when(repository.findById(Mockito.anyInt()))
                 .thenThrow(new ResourceNotFoundException("User não encontrado"));
 
@@ -92,7 +92,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenCreateThenReturnSuccess() {
+    void whenCreateThenReturnUser() {
         when(repository.save(Mockito.any())).thenReturn(user);
 
         User response = service.createResource(userDTO);
@@ -120,7 +120,7 @@ class UserServiceTest {
     }
 
     @Test
-    void whenUpdateResourceThenReturnSuccess() {
+    void whenUpdateResourceThenReturnUser() {
         when(repository.save(Mockito.any())).thenReturn(user);
 
         User response = service.updateResource(userDTO);
@@ -145,6 +145,14 @@ class UserServiceTest {
             Assertions.assertEquals(FieldExistingException.class, error.getClass());
             Assertions.assertEquals("Email já cadastrado", error.getMessage());
         }
+    }
+
+    @Test
+    void whenRemoveResourceThenVoid() {
+        when(repository.findById(anyInt())).thenReturn(optionalUser);
+        doNothing().when(repository).deleteById(anyInt());
+        service.removeResource(ID);
+        verify(repository, times(1)).deleteById(anyInt());
     }
 
     @Test
