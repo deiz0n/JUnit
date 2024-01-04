@@ -11,8 +11,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,6 +31,7 @@ class UserControllerTest {
     public static final String EMAIL = "eduardo@gmail.com";
     public static final String SENHA = "123";
     public static final Integer INDEX = 0;
+
 
     @InjectMocks
     private UserController controller;
@@ -55,6 +60,7 @@ class UserControllerTest {
         assertNotNull(response.getBody());
         assertEquals(ResponseEntity.class, response.getClass());
         assertEquals(UserDTO.class, response.getBody().getClass());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         assertEquals(ID, response.getBody().getId());
         assertEquals(NOME, response.getBody().getNome());
@@ -63,7 +69,24 @@ class UserControllerTest {
     }
 
     @Test
-    void getUsers() {
+    void whenGetUsersThenReturnListOfUserDTO() {
+        when(service.getResources()).thenReturn(List.of(user));
+        when(mapper.map(any(), any())).thenReturn(userDTO);
+
+        ResponseEntity<List<UserDTO>> response = controller.getUsers();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(UserDTO.class, response.getBody().get(INDEX).getClass());
+
+        assertEquals(ID, response.getBody().get(INDEX).getId());
+        assertEquals(NOME, response.getBody().get(INDEX).getNome());
+        assertEquals(EMAIL, response.getBody().get(INDEX).getEmail());
+        assertEquals(SENHA, response.getBody().get(INDEX).getSenha());
     }
 
     @Test
