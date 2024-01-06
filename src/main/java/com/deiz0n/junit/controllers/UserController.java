@@ -55,9 +55,9 @@ public class UserController {
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody UserDTO newUser) {
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestBody UserDTO newUser) {
         newUser.setId(id);
-        var user = service.updateResource(newUser);
+        var user = mapper.map(service.updateResource(newUser), UserDTO.class);
         return ResponseEntity.ok().body(user);
     }
 
