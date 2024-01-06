@@ -43,7 +43,7 @@ public class UserController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody UserDTO newUser) {
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO newUser) {
         var user = service.createResource(newUser);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()

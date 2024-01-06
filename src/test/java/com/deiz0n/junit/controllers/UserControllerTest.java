@@ -50,7 +50,7 @@ class UserControllerTest {
     }
 
     @Test
-    void whenGetUserTheReturnUserDTO() {
+    void whenGetUserTheReturnOk() {
         when(service.getResource(anyInt())).thenReturn(user);
         when(mapper.map(any(), any())).thenReturn(userDTO);
 
@@ -69,7 +69,7 @@ class UserControllerTest {
     }
 
     @Test
-    void whenGetUsersThenReturnListOfUserDTO() {
+    void whenGetUsersThenReturnOk() {
         when(service.getResources()).thenReturn(List.of(user));
         when(mapper.map(any(), any())).thenReturn(userDTO);
 
@@ -90,7 +90,14 @@ class UserControllerTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnCreated() {
+        when(service.createResource(any())).thenReturn(user);
+
+        ResponseEntity<UserDTO> response = controller.create(userDTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertNotNull(response.getHeaders().get("Location"));
     }
 
     @Test
