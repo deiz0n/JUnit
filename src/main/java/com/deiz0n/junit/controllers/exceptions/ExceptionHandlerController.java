@@ -15,7 +15,7 @@ import java.time.Instant;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> entityNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
+    public ResponseEntity<StandartError> entityNotFound(ResourceNotFoundException exception, HttpServletRequest request) {
         var error = new StandartError(
                 Instant.now(),
                 HttpStatus.NOT_FOUND,
@@ -26,7 +26,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(FieldExistingException.class)
-    public ResponseEntity<?> fieldExisting(FieldExistingException exception, HttpServletRequest request) {
+    public ResponseEntity<StandartError> fieldExisting(FieldExistingException exception, HttpServletRequest request) {
         var error = new StandartError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST,
