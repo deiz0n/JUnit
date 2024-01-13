@@ -1,4 +1,4 @@
-# Testes com JUnit
+# Testes Unitários com JUnit
 
 ## `📑` -  Descrição
 A API foi desenvolvida com o intuito de por em prática meus conhecimentos em testes unitários. Nesse cenário, acabei utilizando
