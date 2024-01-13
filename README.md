@@ -1,4 +1,4 @@
-# Gerenciador de Pedidos - API
+# Testes com JUnit
 
 ## `📑` -  Descrição
 A API foi desenvolvida com o intuito de por em prática meus conhecimentos em testes unitários. Nesse cenário, acabei utilizando
